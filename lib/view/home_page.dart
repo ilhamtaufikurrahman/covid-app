@@ -1,5 +1,4 @@
 import 'package:covid_app/global_resources.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,13 +42,6 @@ class HomePage extends StatelessWidget {
               (BuildContext context, AsyncSnapshot<List<Harian>> snapshot) {
             if (snapshot.hasData) {
               List<Harian> harian = snapshot.data!;
-              List<HarianData> harianData = [];
-              for (var item in harian) {
-                harianData.add(HarianData(
-                    DateTime.parse(item.keyAsString.toString()),
-                    item.jumlahPositif,
-                    item.jumlahSembuh));
-              }
               return RotatedBox(
                 quarterTurns: 1,
                 child: SfCartesianChart(
@@ -62,18 +54,20 @@ class HomePage extends StatelessWidget {
                   primaryYAxis: NumericAxis(opposedPosition: true),
                   legend: Legend(isVisible: true),
                   series: <ChartSeries>[
-                    LineSeries<HarianData, DateTime>(
+                    LineSeries<Harian, DateTime>(
                       legendItemText: 'Positif',
-                      dataSource: harianData,
-                      xValueMapper: (HarianData data, _) => data.bulan,
-                      yValueMapper: (HarianData data, _) => data.positif,
+                      dataSource: harian,
+                      xValueMapper: (Harian data, _) =>
+                          DateTime.parse(data.keyAsString.toString()),
+                      yValueMapper: (Harian data, _) => data.jumlahPositif,
                       enableTooltip: true,
                     ),
-                    LineSeries<HarianData, DateTime>(
+                    LineSeries<Harian, DateTime>(
                       legendItemText: 'Sembuh',
-                      dataSource: harianData,
-                      xValueMapper: (HarianData data, _) => data.bulan,
-                      yValueMapper: (HarianData data, _) => data.sembuh,
+                      dataSource: harian,
+                      xValueMapper: (Harian data, _) =>
+                          DateTime.parse(data.keyAsString.toString()),
+                      yValueMapper: (Harian data, _) => data.jumlahSembuh,
                       enableTooltip: true,
                     ),
                   ],
