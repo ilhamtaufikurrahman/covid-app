@@ -90,15 +90,16 @@ class HomePage extends StatelessWidget {
             if (snapshot.hasData) {
               Total total = snapshot.data!;
               return SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
                 series: <ChartSeries>[
-                  ColumnSeries<ChartData, int>(
+                  BarSeries<ChartData, String>(
                       dataSource: [
                         ChartData("Positif", total.jumlahPositif, xx: 1),
                         ChartData("Dirawat", total.jumlahDirawat, xx: 2),
                         ChartData("Sembuh", total.jumlahSembuh, xx: 3),
                         ChartData("Meninggal", total.jumlahMeninggal, xx: 4),
                       ],
-                      xValueMapper: (ChartData data, _) => data.xx,
+                      xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y)
                 ],
               );
